@@ -6,6 +6,12 @@ function CreateSphere(r,diameter=2,color="red",segments=2){
     sphere.material = sphereMaterial;
 }
 
+function dropHandler(env){
+    console.log("Detected a file drop");
+    env.preventDefault();
+}
+
+
 var canvas = document.getElementById("renderCanvas");//obtain the canvas from HTML
 
 //Render loop
