@@ -1,3 +1,11 @@
+function CreateSphere(r,diameter=2,color="red",segments=2){
+    var sphere= BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: diameter, segments: segments}, scene);
+    sphere.position.set(r[0],r[1],r[2]);
+    const sphereMaterial = new BABYLON.StandardMaterial("Sphere Material", scene);
+    sphereMaterial.diffuseColor = BABYLON.Color3.Red();
+    sphere.material = sphereMaterial;
+}
+
 var canvas = document.getElementById("renderCanvas");//obtain the canvas from HTML
 
 //Render loop
@@ -21,14 +29,15 @@ var createScene = function () {
     var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);//placed a camera
     camera.setTarget(BABYLON.Vector3.Zero());// Position the camera to 0
     camera.attachControl(canvas, true); // Camera control to the canvas
+    camera.invertRotation=true;
     
     var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);//light, aiming 0,1,0 - to the sky (non-mesh)
     light.intensity = 0.7; // Default intensity is 1. Let's dim the light a small amount
     
-    var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2, segments: 32}, scene);//Draw a shpere
+    var sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2, segments: 4}, scene);//Draw a shpere
     sphere.position.y = 1;//Move the sphere up
 
-    var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);//Draw a ground
+    // var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);//Draw a ground
 
     return scene;
 };
@@ -57,4 +66,4 @@ initFunction().then(() => {sceneToRender = scene});
 // Resize
 window.addEventListener("resize", function () {
     engine.resize();
-});
+});4
