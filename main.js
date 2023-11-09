@@ -5,11 +5,70 @@ function CreateSphere(r,diameter=2,color="red",segments=2){
     sphereMaterial.diffuseColor = BABYLON.Color3.Red();
     sphere.material = sphereMaterial;
 }
+class Particle{
+    constructor(r,radius,color,strand){
+        this.r=r;
+        this.radius=radius;
+        this.color=color;
+        this.strand=strand;
+    }
+}
+
+class Particles{
+    constructor(){
+        this.particles=[]
+    }
+    newParticle(strand=0,color="white",radius=2){
+        if(color.isInteger()){
+            
+        }
+        let p = new Particle(r,radius,color,strand);
+        this.particles.push(p);
+        return p;
+    }
+    updateCoordinates(r=BABYLON.Vector3(0,0,0)){
+        this.r=r;
+    };
+}
 
 function dropHandler(env){
     console.log("Detected a file drop");
+    if(env.dataTransfer.items){
+        [...env.dataTransfer.items].forEach((item,i)=>{
+            if(item.kind === "file"){
+                const file = item.getAsFile();
+                let name = file.name;
+                // console.log(name.split("."));
+                if(name.split(".")[1]=="top"){
+                    reader = new FileReader();
+                    reader.onload=function(event){
+                        var fileContentArray= this.result.split(/\r\n|\n/);
+                        for(i=1;i<fileContentArray.length;i++){
+                            words = fileContentArray[i].split(" ");
+                            if(words[0].includes("#")) continue;
+                            Par.newParticle(words[1],words[2],word[3]);
+                            console.log(words);
+                        }
+                        // console.log(fileContentArray);
+                    }
+                    reader.readAsText(file);
+                };
+                // console.log(file);
+            }
+        });
+    }
     env.preventDefault();
 }
+
+function onDragOverHandler(env){
+    // console.log("Detected on drag over");
+    env.preventDefault();
+}
+
+
+// Good variables
+
+Par= new Particles();
 
 
 var canvas = document.getElementById("renderCanvas");//obtain the canvas from HTML
@@ -44,6 +103,8 @@ var createScene = function () {
     sphere.position.y = 1;//Move the sphere up
 
     // var ground = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);//Draw a ground
+
+    // All common variables
 
     return scene;
 };
