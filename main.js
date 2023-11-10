@@ -2,6 +2,7 @@ particles=[];
 color=[];
 radius=[];
 strand=[];
+box=[];
 // dict={r:BABYLON.Vector3.Zero(),radius:-1,color:BABYLON.Color3.White(),strand:-1};
 // dict=[];
 
@@ -22,7 +23,7 @@ function onDragOverHandler(env){
     env.preventDefault();
 }
 
-function CreateSphere(x,y,z,diameter=1,color=BABYLON.Color3.Red(),segments=2){
+async function CreateSphere(x,y,z,diameter=1,color=BABYLON.Color3.Red(),segments=4){
     let name = generateRandomString(5);
     var sphere= BABYLON.MeshBuilder.CreateSphere(name, {diameter: diameter, segments: segments}, scene);
     sphere.position.x=x;
@@ -110,8 +111,13 @@ function dropHandler(env){
                     reader.onload=function(event2){
                         let fileContentArray2= this.result.split(/\r\n|\n/);
                         let j=0;
-                        for(let i=1;i<fileContentArray2.length;i++){
+                        for(let i=0;i<fileContentArray2.length;i++){
                             words = fileContentArray2[i].split(" ");
+                            if(words[0].includes('b')){
+                                // box[0]=words[2];box[1]=words[3];box[2]=words[4];
+                                // camera.setTarget(BABYLON.Vector3(Number(words[2])/2.0,Number(words[3])/2.0,-Number(words[4])));
+                                camera.position.set(Number(words[2])/3.0,Number(words[3])/3.0,-Number(words[4]));
+                            };
                             if(words[0].includes("#")||words[0].includes("t")||words[0].includes("b")||words[0].includes("E")){
                                 continue;
                             };
@@ -145,12 +151,13 @@ var startRenderLoop = function (engine, canvas) {
 var engine = null;
 var scene = null;
 var sceneToRender = null;
+var camera=null;
 var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); };
 
 //main scene function0
 var createScene = function () {
     scene= new BABYLON.Scene(engine);
-    var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);//placed a camera
+    camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);//placed a camera
     camera.setTarget(BABYLON.Vector3.Zero());// Position the camera to 0
     camera.attachControl(canvas, true); // Camera control to the canvas
     camera.invertRotation=true;
