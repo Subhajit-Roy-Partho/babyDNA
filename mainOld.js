@@ -1,100 +1,100 @@
-particles=[];
-color=[];
-radius=[];
-strand=[];
-// dict={r:BABYLON.Vector3.Zero(),radius:-1,color:BABYLON.Color3.White(),strand:-1};
-// dict=[];
+Particles=[]
 
-function generateRandomString(length) {
-    var result           = '';
-    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    
-    for ( var i = 0; i < length; i++ ) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength));
-    }
-    
-    return result;
-}
 
-function onDragOverHandler(env){
-    // console.log("Detected on drag over");
-    env.preventDefault();
-}
-
-function CreateSphere(x,y,z,diameter=1,color=BABYLON.Color3.Red(),segments=2){
-    let name = generateRandomString(5);
-    var sphere= BABYLON.MeshBuilder.CreateSphere(name, {diameter: diameter, segments: segments}, scene);
-    sphere.position.x=x;
-    sphere.position.y=y;
-    sphere.position.z=z;
+function CreateSphere(scene,r,diameter,color,segments=2){
+    var sphere= BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: diameter, segments: segments}, scene);
+    sphere.position.clone(r);
     const sphereMaterial = new BABYLON.StandardMaterial("Sphere Material", scene);
     sphereMaterial.diffuseColor = color;
     sphere.material = sphereMaterial;
 }
-
-function colorFromInteger(color){
-    switch(Number(color)){
-        case 20:
-            color=BABYLON.Color3.Red();
-            break;
-        case -20:
-            color=BABYLON.Color3.Red();
-            break;
-        case 25:
-            color=BABYLON.Color3.Blue();
-            break;
-        case -25:
-            color=BABYLON.Color3.Blue();
-            break;
-        case 30:
-            color=BABYLON.Color3.Yellow();
-            break;
-        case -30:
-            color=BABYLON.Color3.Yellow();
-            break;
-        case 35:
-            color=BABYLON.Color3.Green();
-            break;
-        case -35:
-            color=BABYLON.Color3.Green();
-            break;
-        case 40:
-            color=BABYLON.Color3.Purple();
-            break;
-        case -40:
-            color=BABYLON.Color3.Purple();
-            break;
-        default:
-            break;
+class Particle{
+    radius;
+    color;
+    strand;
+    r;
+    constructor(radius,color,strand){
+        this.radius=radius;
+        this.color=color;
+        this.strand=strand;
+        this.r=new BABYLON.Vector3.Zero();
     }
-    return color;
 }
 
+class Particles{
+    particles=[];
+    constructor(){
+        this.particles=[]
+    }
+    newParticle(strand=0,color=20,radius=2){
+        if(!color.includes("#")){
+            switch(Number(color)){
+                case 20:
+                    color=BABYLON.Color3.Red();
+                    break;
+                case -20:
+                    color=BABYLON.Color3.Red();
+                    break;
+                case 25:
+                    color=BABYLON.Color3.Blue();
+                    break;
+                case -25:
+                    color=BABYLON.Color3.Blue();
+                    break;
+                case 30:
+                    color=BABYLON.Color3.Yellow();
+                    break;
+                case -30:
+                    color=BABYLON.Color3.Yellow();
+                    break;
+                case 35:
+                    color=BABYLON.Color3.Green();
+                    break;
+                case -35:
+                    color=BABYLON.Color3.Green();
+                    break;
+                case 40:
+                    color=BABYLON.Color3.Purple();
+                    break;
+                case -40:
+                    color=BABYLON.Color3.Purple();
+                    break;
+                default:
+                    break;
+            }
+        }
+        // console.log(color);
+        let p = new Particle(radius,color,strand);
+        this.particles.push(p);
+        return p;
+    }
+
+    totalParticles(){
+        return this.particles.length;
+    }
+    getProperties(index){
+        return this.particles[index].getProperties();
+    }
+}
 
 function dropHandler(env){
     // console.log("Detected a file drop");
-    // scene=createScene();
+    scene=createScene();
     if(env.dataTransfer.items){
         [...env.dataTransfer.items].forEach((item,i)=>{
             if(item.kind === "file"){
                 const file = item.getAsFile();
                 let name = file.name;
+                // console.log(name.split("."));
                 if(name.split(".")[1]=="top"){
                     reader = new FileReader();
                     reader.onload=function(event){
                         let fileContentArray= this.result.split(/\r\n|\n/);
-                        j=0;
                         for(let i=1;i<fileContentArray.length;i++){
                             words = fileContentArray[i].split(" ");
                             if(words[0].includes("#")) continue;
-                            console.log("Math"+Math.random());
-                            strand[j]=words[1];
-                            color[j]=colorFromInteger(words[2]);
-                            radius[j]=words[3];
-                            dict=[BABYLON.Vector3.Zero(),words[3],colorFromInteger(words[2]),words[1]];
-                            particles[j]=dict;
-                            j+=1;
+                            dict={r:BABYLON.Vector3.Zero()};
+                            Par.newParticle(words[1],words[2],words[3]);
                         }
                     }
                     reader.readAsText(file);
@@ -106,6 +106,7 @@ function dropHandler(env){
             if(item.kind==="file"){
                 const file = item.getAsFile();let name = file.name;
                 if(name.split(".")[1]=="dat"){
+                    console.log(Par.particles);
                     reader=new FileReader();
                     reader.onload=function(event2){
                         let fileContentArray2= this.result.split(/\r\n|\n/);
@@ -115,13 +116,13 @@ function dropHandler(env){
                             if(words[0].includes("#")||words[0].includes("t")||words[0].includes("b")||words[0].includes("E")){
                                 continue;
                             };
-                            // particles[j][0]=new BABYLON.Vector3(Number(words[0]),Number(words[1]),Number(words[2]));
-                            CreateSphere(Number(words[0]),Number(words[1]),Number(words[2]),radius[j],color[j]);
-                            j+=1;
+                            Par.particles[j].r.set(Number(words[0]),Number(words[1]),Number(words[2]));
+
+                            j++;
                         }
                     }
                     reader.readAsText(file);
-                    // for(let i=0;i<Par.totalparticles();i++){
+                    // for(let i=0;i<Par.totalParticles();i++){
                     //     CreateSphere(Par.getProperties(i));
                     // }
                 }
@@ -130,6 +131,24 @@ function dropHandler(env){
     }
     env.preventDefault();
 }
+
+function onDragOverHandler(env){
+    // console.log("Detected on drag over");
+    env.preventDefault();
+}
+
+function Draw(){
+    // let scene=createScene();
+    for(let i=0;i<Par.totalParticles();i++){
+        CreateSphere();
+
+    }
+}
+
+// Good variables
+
+Par= new Particles();
+
 
 var canvas = document.getElementById("renderCanvas");//obtain the canvas from HTML
 
@@ -149,7 +168,8 @@ var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, {
 
 //main scene function0
 var createScene = function () {
-    scene= new BABYLON.Scene(engine);
+    var scene = new BABYLON.Scene(engine);//Scene starting point
+    
     var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);//placed a camera
     camera.setTarget(BABYLON.Vector3.Zero());// Position the camera to 0
     camera.attachControl(canvas, true); // Camera control to the canvas
