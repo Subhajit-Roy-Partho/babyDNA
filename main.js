@@ -23,7 +23,8 @@ function onDragOverHandler(env){
     env.preventDefault();
 }
 
-async function CreateSphere(x,y,z,diameter=1,color=BABYLON.Color3.Red(),segments=4){
+async function CreateSphere(x,y,z,radius=1,color=BABYLON.Color3.Red(),segments=4){
+    let diameter=2*radius;
     let name = generateRandomString(5);
     var sphere= BABYLON.MeshBuilder.CreateSphere(name, {diameter: diameter, segments: segments}, scene);
     sphere.position.x=x;
@@ -157,10 +158,15 @@ var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, {
 //main scene function0
 var createScene = function () {
     scene= new BABYLON.Scene(engine);
+    scene.clearColor= BABYLON.Color3.Gray();
     camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);//placed a camera
+
     camera.setTarget(BABYLON.Vector3.Zero());// Position the camera to 0
     camera.attachControl(canvas, true); // Camera control to the canvas
     camera.invertRotation=true;
+    camera.speed=7;
+    // camera.cameraAcceleration = 0.005
+    camera.maxCameraSpeed = 20;
     
     var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);//light, aiming 0,1,0 - to the sky (non-mesh)
     light.intensity = 5; // Default intensity is 1. Let's dim the light a small amount
