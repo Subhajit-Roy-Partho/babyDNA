@@ -6,6 +6,10 @@ box=[];
 // dict={r:BABYLON.Vector3.Zero(),radius:-1,color:BABYLON.Color3.White(),strand:-1};
 // dict=[];
 
+function inboxing(x,y,x){
+    return x,y,z;
+}
+
 function generateRandomString(length) {
     var result           = '';
     var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -115,8 +119,7 @@ function dropHandler(env){
                         for(let i=0;i<fileContentArray2.length;i++){
                             words = fileContentArray2[i].split(" ");
                             if(words[0].includes('b')){
-                                // box[0]=words[2];box[1]=words[3];box[2]=words[4];
-                                // camera.setTarget(BABYLON.Vector3(Number(words[2])/2.0,Number(words[3])/2.0,-Number(words[4])));
+                                box[0]=words[2];box[1]=words[3];box[2]=words[4];
                                 camera.position.set(Number(words[2])/3.0,Number(words[3])/3.0,-Number(words[4]));
                             };
                             if(words[0].includes("#")||words[0].includes("t")||words[0].includes("b")||words[0].includes("E")){
