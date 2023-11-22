@@ -26,8 +26,6 @@ jobs:
 
     - name: Deploy
       if: github.event_name != 'pull_request'
-      uses: JamesIves/github-pages-deploy-action@4.1.4
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
         folder: dist      # The folder the action should deploy
-        branch: gh-pages
-        token: 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  # Replace with your PAT secret name
