@@ -13,16 +13,16 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Setup Node
-      uses: actions/setup-node@v2
-      with:
-        node-version: '14'  # Set this to the Node version you need
+    - name: Setup Bun
+      run: |
+        curl -fsSL https://bun.sh/install | bash
+        echo "$HOME/.bun/bin" >> $GITHUB_PATH
 
     - name: Install Dependencies
-      run: npm install
+      run: bun install
 
     - name: Build
-      run: npm run build  # Update this with your build script
+      run: bun run build  # Update this with your build script
 
     - name: Deploy
       uses: JamesIves/github-pages-deploy-action@4.1.4
