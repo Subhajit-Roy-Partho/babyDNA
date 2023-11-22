@@ -30,4 +30,4 @@ jobs:
       with:
         folder: dist      # The folder the action should deploy
         branch: gh-pages
-        token: ${{ secrets.YOUR_PERSONAL_ACCESS_TOKEN }}  # Replace with your PAT secret name
+        token: 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  # Replace with your PAT secret name
