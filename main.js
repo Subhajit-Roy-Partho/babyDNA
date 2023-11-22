@@ -37,13 +37,13 @@ const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0)
 // Add a sphere
 const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2}, scene);
 
-BABYLON.WebXRDefaultExperience.CreateAsync(scene).then((xrExperience) => {
-  // Switch to the WebXR camera
-  scene.activeCamera = xrExperience.baseExperience.camera;
+// BABYLON.WebXRDefaultExperience.CreateAsync(scene).then((xrExperience) => {
+//   // Switch to the WebXR camera
+//   scene.activeCamera = xrExperience.baseExperience.camera;
 
-  // Dispose of the initial ArcRotateCamera
-  camera.dispose();
-});
+//   // Dispose of the initial ArcRotateCamera
+//   camera.dispose();
+// });
 
 
 // Render loop
