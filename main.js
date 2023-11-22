@@ -11,6 +11,10 @@ const engine = new BABYLON.Engine(canvas, true);
 // Create a scene
 const scene = new BABYLON.Scene(engine);
 
+//add a vr camera
+// const vrCamera = new BABYLON.WebVRFreeCamera("vrCamera", new BABYLON.Vector3(0, 1.6, 0), scene);
+
+
 // Add a camera
 const camera = new FreeCamera("freeCamera", new BABYLON.Vector3(0, 5, -10), scene);
 camera.attachControl(canvas, true);
@@ -23,8 +27,7 @@ camera.keysDown.push(83);  // S
 camera.keysLeft.push(65);  // A
 camera.keysRight.push(68); // D
 
-//Arc rotate camera is locked to a single position 
-// const camera = new BABYLON.ArcRotateCamera("camera", Math.PI / 2, Math.PI / 4, 5, BABYLON.Vector3.Zero(), scene);
+// scene.activeCamera = camera; //set vr to be active camera
 
 
 
