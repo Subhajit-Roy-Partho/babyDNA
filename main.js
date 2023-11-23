@@ -1,22 +1,24 @@
 import * as BABYLON from '@babylonjs/core';
 import '@babylonjs/loaders';
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
+// import { dropZone } from './functions/triggers';
+import { Environment } from './functions/particles';
+import { render } from "./functions/basic";
+import { readSubho } from "./functions/file";
+import { trigger } from './functions/triggers';
 
 // Get the canvas element
 const canvas = document.getElementById('canvas');
 
-// Create a Babylon.js engine
 const engine = new BABYLON.Engine(canvas, true);
-
-// Create a scene
-const scene = new BABYLON.Scene(engine);
-
+export var scene = new BABYLON.Scene(engine);
+export var environment = new Environment();
 //add a vr camera
 // const vrCamera = new BABYLON.WebVRFreeCamera("vrCamera", new BABYLON.Vector3(0, 1.6, 0), scene);
 
 
 // Add a camera
-const camera = new FreeCamera("freeCamera", new BABYLON.Vector3(0, 5, -10), scene);
+const camera = new FreeCamera("freeCamera", new BABYLON.Vector3(0,0,0), scene);
 camera.attachControl(canvas, true);
 camera.invertRotation=true;
 camera.speed=5;
@@ -35,7 +37,7 @@ camera.keysRight.push(68); // D
 const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0), scene);
 
 // Add a sphere
-const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2}, scene);
+// const sphere = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2}, scene);
 
 // BABYLON.WebXRDefaultExperience.CreateAsync(scene).then((xrExperience) => {
 //   // Switch to the WebXR camera
@@ -55,3 +57,42 @@ engine.runRenderLoop(() => {
 window.addEventListener('resize', function() {
   engine.resize();
 });
+
+// Drop Listner DOM
+
+// document.addEventListener('DOMContentLoaded',()=>{
+//   dropZone();
+// })
+
+window.addEventListener('dragover',(event)=>{
+  // event.stopPropagation();
+  event.preventDefault();
+  event.dataTransfer.dropEffect='copy';
+});
+
+window.addEventListener('drop',(event)=>{
+  event.stopPropagation();
+  event.preventDefault();
+  
+  const files=event.dataTransfer.files;
+  console.log("Total Number of files received = ",files.length);
+
+  for(let i=0;i<files.length;i++){
+      let name= files[i].name;
+      name = name.split(".");
+      if(name[name.length-1]=="top"){
+          readSubho(files[i]);
+      }
+  }
+  for(let i=0;i<files.length;i++){
+      let name= files[i].name;
+      name = name.split(".");
+      if(name[name.length-1]=="dat"){
+          readSubho(files[i],"dat");
+      }
+  }
+  render();
+
+});
+
+export default {scene,environment};

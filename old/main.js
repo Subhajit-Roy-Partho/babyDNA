@@ -49,7 +49,7 @@ async function CreateSphere(x,y,z,radius=1,color=BABYLON.Color3.Red(),segments=4
     const sphereMaterial = new BABYLON.StandardMaterial("Sphere Material", scene);
     sphereMaterial.diffuseColor = color;
     sphere.material = sphereMaterial;
-}1
+}
 
 function colorFromInteger(color){
     switch(Number(color)){
