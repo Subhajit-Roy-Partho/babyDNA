@@ -1,11 +1,9 @@
 import * as BABYLON from '@babylonjs/core';
 import '@babylonjs/loaders';
 import { FreeCamera } from '@babylonjs/core/Cameras/freeCamera';
-// import { dropZone } from './functions/triggers';
 import { Environment } from './functions/particles';
 import { render } from "./functions/basic";
 import { readSubho } from "./functions/file";
-import { trigger } from './functions/triggers';
 
 // Get the canvas element
 const canvas = document.getElementById('canvas');
@@ -75,7 +73,7 @@ window.addEventListener('drop',(event)=>{
   event.preventDefault();
   
   const files=event.dataTransfer.files;
-  console.log("Total Number of files received = ",files.length);
+  // console.log("Total Number of files received = ",files.length);
 
   for(let i=0;i<files.length;i++){
       let name= files[i].name;
@@ -91,7 +89,9 @@ window.addEventListener('drop',(event)=>{
           readSubho(files[i],"dat");
       }
   }
-  render();
+  render().then(result=>{
+    console.log("hope");
+  })
 
 });
 

@@ -15,13 +15,13 @@ export async function sphereCreator(r=Vector3.Zero(),radius=1,color=Color3.Red()
     const sphereMaterial = new StandardMaterial("Sphere Material", scene);
     sphereMaterial.diffuseColor = color;
     sphere.material = sphereMaterial;
-    console.log("called");
+    console.log(r);
     return sphere;
 }
 
 export async function render(){
     environment.particles.forEach(particle=>{
-        console.log(particle);
+        sphereCreator(particle.r)
     })
 }
 
