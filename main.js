@@ -85,6 +85,8 @@ function colorFromInteger(color){
             break;
         case 0:
             color=BABYLON.Color3.Brown();
+        case 100:
+            color=BABYLON.Color3.White();
         default:
             break;
     }
