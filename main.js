@@ -109,7 +109,7 @@ function dropHandler(env){
                         j=0;
                         for(let i=1;i<fileContentArray.length;i++){
                             words = fileContentArray[i].split(" ");
-                            if(words[0].includes("#")) continue;
+                            if(words[0].includes("#")||words.includes("#")) continue;
                             console.log("Math"+Math.random());
                             strand[j]=words[1];
                             color[j]=colorFromInteger(words[2]);
